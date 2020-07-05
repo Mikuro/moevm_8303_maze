@@ -19,8 +19,8 @@ public class SizeInput extends JFrame{
         setLayout(new GridLayout(3, 1, 10, 10));
         this.ok = new JButton("Ok");
         this.info = new JLabel("Введите координаты:");
-        this.xCord = new JTextField("x", 5);
-        this.yCord = new JTextField("y", 5);
+        this.xCord = new JTextField("ширина лабиринта", 5);
+        this.yCord = new JTextField("длина лабиринта", 5);
         add(this.info);
         add(new JPanel());
         add(this.xCord);

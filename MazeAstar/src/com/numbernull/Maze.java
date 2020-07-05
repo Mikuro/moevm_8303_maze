@@ -1,0 +1,130 @@
+package com.numbernull;
+
+import java.util.*;
+
+public class Maze {
+    private final int sizeX;
+    private final int sizeY;
+    private Vector< Vector<Cell> > labyrinth;
+    public Maze(int sizeX, int sizeY){
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        labyrinth = new Vector< Vector<Cell> >(10, 10);
+        for(int i = 0; i < sizeY; i++) {
+            Vector<Cell> cells = new Vector<Cell>();
+            for (int j = 0; j < sizeX; j++) {
+                Cell cell = new Cell(j, i);
+                cells.addElement(cell);
+                cell.isWall = true;
+            }
+            labyrinth.addElement(cells);
+        }
+
+        for(int i = 1; i < sizeY - 1; i++){
+            for(int j = 1; j < sizeX - 1; j++){
+                addNeighbours(labyrinth.elementAt(i).elementAt(j));
+            }
+        }
+        generateMaze();
+        printMaze();
+    }
+
+    public void printMaze(){
+        for(int i = 0; i < sizeY; i++){
+            for(int j = 0; j < sizeX; j++){
+                if(labyrinth.elementAt(i).elementAt(j).isWall){
+                    System.out.print("#");
+                }else System.out.print("&");
+            }
+            System.out.print("\n");
+        }
+    }
+    private void generateMaze() {
+        Cell currentCell = labyrinth.elementAt(1).elementAt(1);
+        Stack<Cell> stack = new Stack<Cell>();
+        Map<Cell, Integer> proceccedCells = new HashMap<Cell, Integer>();
+        stack.push(currentCell);
+        //основной цикл
+        while (!stack.empty()) {
+            printMaze();
+            proceccedCells.put(currentCell, -1);//если вершина является дорожкой, то нет смысла в нее ходить
+            currentCell.isWall = false;//ставим в текущую клетку путь
+            //записываем соседей просмотриваемой вершины в массив, и помечаем сколько раз !повторно! мы их встретили
+            for (Cell i : currentCell.neighbours) {
+                if (proceccedCells.containsKey(i) && proceccedCells.get(i) != -1) {
+                    proceccedCells.put(i, proceccedCells.get(i) + 1);
+                } else {
+                    proceccedCells.put(i, 0);
+                }
+            }
+
+            Random random = new Random();
+            //выбираем рандомного соседа
+            Cell randNeighbour = currentCell.neighbours.elementAt(random.nextInt(currentCell.neighbours.size()));
+
+            boolean backFlag = false;
+            //если рандомный сосед уже сосед другой просмотренной вершины
+            if (proceccedCells.get(randNeighbour) != 0) {
+                //проверяем, что есть сосед, который не принадлежит обработанной вершине
+                for (Cell i : currentCell.neighbours) {
+                    backFlag = proceccedCells.get(i) != 0;
+                }
+            }
+            //если таких вершин нет, тот идем на предыдущую ячейку
+            if (backFlag) {
+                //смотрим, что не пытаемся очистить пустой стек, и переходим в предыдущую вершину
+                stack.pop();
+                currentCell = stack.peek();
+            } else {
+                //если такие вершины есть, то пребираем соседей до посинения
+                while (proceccedCells.get(randNeighbour) != 0) {
+                    randNeighbour = currentCell.neighbours.elementAt(random.nextInt(currentCell.neighbours.size()));
+                }
+                currentCell = randNeighbour;//нашли нужную вершину, перешли в нее
+            }
+            //если стек не пустой, добавляем туда вершину(в случае когда у мы рассмотрим все клетки, мы будем откатываться, и на очередном откате вернемся в начало, вот тогда достав начало, мы и закончим
+            if(!stack.empty())
+                stack.push(currentCell);
+        }
+    }
+
+
+
+    private void addNeighbours(Cell cell) {
+        for (int i = cell.y - 1; i <= cell.y + 1; i++) {
+            for (int j = cell.x - 1; j <= cell.x + 1; j++) {
+                if (i > 0 && i < sizeY - 1 && j > 0 && j < sizeX - 1) {
+                    if(i != cell.y || j != cell.x) {
+                        cell.neighbours.addElement(labyrinth.elementAt(i).elementAt(j));
+                    }
+                }
+            }
+        }
+    }
+
+    private void printNeighbours(Cell cell){
+        System.out.println("Main cell is " + cell.x + " " + cell.y);
+        for(Cell i : cell.neighbours){
+            System.out.println("Slave cell is " + i.x + " " + i.y);
+        }
+
+    }
+
+    protected class Cell{
+        int x;
+        int y;
+        boolean isWall;
+        boolean wasSeen;
+        Vector<Cell> neighbours;
+
+        public Cell(){
+        }
+        public Cell(int x, int y){
+            this.x = x;
+            this.y = y;
+            wasSeen = false;
+            neighbours = new Vector<Cell>(9, 9);
+        }
+    }
+
+}
