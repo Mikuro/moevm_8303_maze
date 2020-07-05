@@ -35,7 +35,7 @@ public class SizeInput extends JFrame{
                     x = Integer.parseInt(xCord.getText());
                     y = Integer.parseInt(yCord.getText());
                         setVisible(false);
-                        new MazeWindow(s, x, y);
+                        new MazeWindow(s, x, y, new Maze(x, y));
                 }
             }
         });

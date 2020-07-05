@@ -6,11 +6,11 @@ import java.util.*;
 public class Maze {
     private final int sizeX;
     private final int sizeY;
-    private Vector<Vector<Cell>> labyrinth;
+    public final Vector<Vector<Cell>> labyrinth;
     public Maze(int sizeX, int sizeY){
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        labyrinth = new Vector< Vector<Cell> >(10, 10);
+        labyrinth = new Vector< Vector<Cell> >(100, 100);
         for(int i = 0; i < sizeY; i++) {
             Vector<Cell> cells = new Vector<Cell>();
             for (int j = 0; j < sizeX; j++) {
@@ -27,7 +27,6 @@ public class Maze {
             }
         }
         generateMaze();
-        printMaze();
     }
 
     public void printMaze(){
@@ -49,7 +48,6 @@ public class Maze {
         boolean flagStack = false;
         //основной цикл
         while (!stack.empty()) {
-            printMaze();
             proceccedCells.put(currentCell, -1);//если вершина является дорожкой, то нет смысла в нее ходить
             currentCell.isWall = false;//ставим в текущую клетку путь
             //записываем соседей просмотриваемой вершины в массив, и помечаем сколько раз !повторно! мы их встретили
@@ -82,10 +80,8 @@ public class Maze {
             //если таких вершин нет, тот идем на предыдущую ячейку
             if (backFlag) {
                 //смотрим, что не пытаемся очистить пустой стек, и переходим в предыдущую вершину
-                System.out.println("\tSlave x " + stack.peek().x + " Slave y " + stack.peek().y);
                 stack.pop();
                 if(!stack.empty()) {
-                    System.out.println("\tSlave x " + stack.peek().x + " Slave y " + stack.peek().y);
                     currentCell = stack.peek();
                     flagStack = true;
                 }
@@ -117,7 +113,6 @@ public class Maze {
                 }
             }
         }
-        printNeighbours(cell);
     }
 
     private void printNeighbours(Cell cell){

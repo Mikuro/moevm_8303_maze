@@ -5,7 +5,6 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
-		Maze maze = new Maze(10, 10);
 		SizeInput si = new SizeInput("Maze");
 		si.setVisible(true);
 		si.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
