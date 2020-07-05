@@ -46,22 +46,24 @@ public class Maze {
         Stack<Cell> stack = new Stack<Cell>();
         Map<Cell, Integer> proceccedCells = new HashMap<Cell, Integer>();
         stack.push(currentCell);
+        boolean flagStack = false;
         //основной цикл
         while (!stack.empty()) {
             printMaze();
             proceccedCells.put(currentCell, -1);//если вершина является дорожкой, то нет смысла в нее ходить
             currentCell.isWall = false;//ставим в текущую клетку путь
             //записываем соседей просмотриваемой вершины в массив, и помечаем сколько раз !повторно! мы их встретили
-            for (Cell i : currentCell.neighbours) {
-                if (proceccedCells.containsKey(i)) {
-                    if(proceccedCells.get(i) != -1){
-                        proceccedCells.put(i, proceccedCells.get(i) + 1);
+            if(!flagStack) {
+                for (Cell i : currentCell.neighbours) {
+                    if (proceccedCells.containsKey(i)) {
+                        if (proceccedCells.get(i) != -1) {
+                            proceccedCells.put(i, proceccedCells.get(i) + 1);
+                        }
+                    } else {
+                        proceccedCells.put(i, 0);
                     }
-                } else {
-                    proceccedCells.put(i, 0);
                 }
             }
-
             Random random = new Random();
             //выбираем рандомного соседа
             Cell randNeighbour = currentCell.neighbours.elementAt(random.nextInt(currentCell.neighbours.size()));
@@ -71,7 +73,7 @@ public class Maze {
             if (proceccedCells.get(randNeighbour) != 0) {
                 //проверяем, что есть сосед, который не принадлежит обработанной вершине
                 for (Cell i : currentCell.neighbours) {
-                    backFlag = proceccedCells.get(i) != 0;
+                    backFlag = proceccedCells.get(i) != 0;//false - когда равно 0, то есть потенциальная дорожка
                     if(!backFlag){
                         break;
                     }
@@ -80,14 +82,13 @@ public class Maze {
             //если таких вершин нет, тот идем на предыдущую ячейку
             if (backFlag) {
                 //смотрим, что не пытаемся очистить пустой стек, и переходим в предыдущую вершину
+                System.out.println("\tSlave x " + stack.peek().x + " Slave y " + stack.peek().y);
                 stack.pop();
                 if(!stack.empty()) {
+                    System.out.println("\tSlave x " + stack.peek().x + " Slave y " + stack.peek().y);
                     currentCell = stack.peek();
+                    flagStack = true;
                 }
-                for (Cell i : currentCell.neighbours) {
-                    proceccedCells.put(i, proceccedCells.get(i) - 1);
-                }
-
             } else {
                 //если такие вершины есть, то пребираем соседей до посинения
                 while (proceccedCells.get(randNeighbour) != 0) {
@@ -95,11 +96,16 @@ public class Maze {
                 }
                 currentCell = randNeighbour;//нашли нужную вершину, перешли в нее
                 stack.push(currentCell);
+                flagStack = false;
             }
         }
     }
 
-
+    /**
+     * -1 - дорожка
+     * 0 - потенциальный путь
+     * >0 - точно стена
+     */
 
     private void addNeighbours(Cell cell) {
         for (int i = cell.y - 1; i <= cell.y + 1; i++) {
@@ -135,7 +141,7 @@ public class Maze {
             this.x = x;
             this.y = y;
             wasSeen = false;
-            neighbours = new Vector<Cell>(9, 9);
+            neighbours = new Vector<Cell>();
         }
     }
 
