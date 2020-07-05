@@ -1,11 +1,12 @@
 package com.numbernull;
 
+
 import java.util.*;
 
 public class Maze {
     private final int sizeX;
     private final int sizeY;
-    private Vector< Vector<Cell> > labyrinth;
+    private Vector<Vector<Cell>> labyrinth;
     public Maze(int sizeX, int sizeY){
         this.sizeX = sizeX;
         this.sizeY = sizeY;
@@ -38,6 +39,7 @@ public class Maze {
             }
             System.out.print("\n");
         }
+        System.out.println();
     }
     private void generateMaze() {
         Cell currentCell = labyrinth.elementAt(1).elementAt(1);
@@ -51,8 +53,10 @@ public class Maze {
             currentCell.isWall = false;//ставим в текущую клетку путь
             //записываем соседей просмотриваемой вершины в массив, и помечаем сколько раз !повторно! мы их встретили
             for (Cell i : currentCell.neighbours) {
-                if (proceccedCells.containsKey(i) && proceccedCells.get(i) != -1) {
-                    proceccedCells.put(i, proceccedCells.get(i) + 1);
+                if (proceccedCells.containsKey(i)) {
+                    if(proceccedCells.get(i) != -1){
+                        proceccedCells.put(i, proceccedCells.get(i) + 1);
+                    }
                 } else {
                     proceccedCells.put(i, 0);
                 }
@@ -68,23 +72,30 @@ public class Maze {
                 //проверяем, что есть сосед, который не принадлежит обработанной вершине
                 for (Cell i : currentCell.neighbours) {
                     backFlag = proceccedCells.get(i) != 0;
+                    if(!backFlag){
+                        break;
+                    }
                 }
             }
             //если таких вершин нет, тот идем на предыдущую ячейку
             if (backFlag) {
                 //смотрим, что не пытаемся очистить пустой стек, и переходим в предыдущую вершину
                 stack.pop();
-                currentCell = stack.peek();
+                if(!stack.empty()) {
+                    currentCell = stack.peek();
+                }
+                for (Cell i : currentCell.neighbours) {
+                    proceccedCells.put(i, proceccedCells.get(i) - 1);
+                }
+
             } else {
                 //если такие вершины есть, то пребираем соседей до посинения
                 while (proceccedCells.get(randNeighbour) != 0) {
                     randNeighbour = currentCell.neighbours.elementAt(random.nextInt(currentCell.neighbours.size()));
                 }
                 currentCell = randNeighbour;//нашли нужную вершину, перешли в нее
-            }
-            //если стек не пустой, добавляем туда вершину(в случае когда у мы рассмотрим все клетки, мы будем откатываться, и на очередном откате вернемся в начало, вот тогда достав начало, мы и закончим
-            if(!stack.empty())
                 stack.push(currentCell);
+            }
         }
     }
 
@@ -94,18 +105,19 @@ public class Maze {
         for (int i = cell.y - 1; i <= cell.y + 1; i++) {
             for (int j = cell.x - 1; j <= cell.x + 1; j++) {
                 if (i > 0 && i < sizeY - 1 && j > 0 && j < sizeX - 1) {
-                    if(i != cell.y || j != cell.x) {
+                    if((i != cell.y || j != cell.x) && (Math.abs(cell.x - j) == 1 ^ Math.abs(cell.y - i) == 1)) {
                         cell.neighbours.addElement(labyrinth.elementAt(i).elementAt(j));
                     }
                 }
             }
         }
+        printNeighbours(cell);
     }
 
     private void printNeighbours(Cell cell){
         System.out.println("Main cell is " + cell.x + " " + cell.y);
         for(Cell i : cell.neighbours){
-            System.out.println("Slave cell is " + i.x + " " + i.y);
+            System.out.println("\tSlave cell is " + i.x + " " + i.y);
         }
 
     }
