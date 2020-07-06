@@ -11,7 +11,7 @@ public class MazeWindow extends JFrame {
         super(s);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1600, 1000);
+        setSize(1600, 1200);
         setResizable(false);
         setLocationRelativeTo(null);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -21,7 +21,7 @@ public class MazeWindow extends JFrame {
 
         GridLayout mazeStyle = new GridLayout(x, y, 0, 0);
         JPanel maze = new JPanel();
-        maze.setSize(400, 400);
+        maze.setSize(1000, 1000);
         maze.setLayout(mazeStyle);
 
         FlowLayout optionsStyle = new FlowLayout(FlowLayout.CENTER);

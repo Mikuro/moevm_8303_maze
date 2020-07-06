@@ -123,12 +123,18 @@ public class Maze {
 
     }
 
-    protected class Cell{
+    public class Cell{
         int x;
         int y;
         boolean isWall;
         boolean wasSeen;
+        boolean isPath;
+        boolean isUsed;
         Vector<Cell> neighbours;
+        int g;
+        int h;
+        int f;
+        Cell cameFrom;
 
         public Cell(){
         }
@@ -136,6 +142,7 @@ public class Maze {
             this.x = x;
             this.y = y;
             wasSeen = false;
+            isPath = false;
             neighbours = new Vector<Cell>();
         }
     }
