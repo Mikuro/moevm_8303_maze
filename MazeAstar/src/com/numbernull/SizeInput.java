@@ -1,26 +1,30 @@
 package com.numbernull;
 
+import org.w3c.dom.ranges.RangeException;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-
-
+/**TODO
+ * окно об ошибке
+ * перепелить под квадрат
+ */
 public class SizeInput extends JFrame{
     private JLabel info;
     private JTextField xCord;
     private JTextField yCord;
-    private int x;
-    private int y;
+    private int x = 0;
+    private int y = 0 ;
     private JButton ok;
 
-    public SizeInput(final String s){
+    public SizeInput(final String s) {
         super(s);
         setLayout(new GridLayout(3, 1, 10, 10));
         this.ok = new JButton("Ok");
         this.info = new JLabel("Введите координаты:");
-        this.xCord = new JTextField("x", 5);
-        this.yCord = new JTextField("y", 5);
+        this.xCord = new JTextField("ширина лабиринта", 5);
+        this.yCord = new JTextField("длина лабиринта", 5);
         add(this.info);
         add(new JPanel());
         add(this.xCord);
@@ -32,10 +36,20 @@ public class SizeInput extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == ok){
-                    x = Integer.parseInt(xCord.getText());
-                    y = Integer.parseInt(yCord.getText());
+                    try {
+                        x = Integer.parseInt(xCord.getText());
+                        y = Integer.parseInt(yCord.getText());
                         setVisible(false);
-                        new MazeWindow(s, x, y);
+                        if (x < 4 || x > 150 || y < 4 || y > 150)
+                            throw new RangeException((short) 0,"size should be from 4 to 150");
+                        new MazeWindow(s, x, y, new Maze(x, y));
+                    }catch (NumberFormatException err){
+                        System.out.println("nice try");
+                        //TODO кинуть окно, мол введи норм
+                    }catch (RangeException err){
+                        System.out.println(err.getMessage());
+                        //TODO кинуть окно, мол введи норм
+                    }
                 }
             }
         });
