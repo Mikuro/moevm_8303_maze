@@ -1,5 +1,7 @@
 package com.numbernull;
 
+import org.w3c.dom.ranges.RangeException;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -7,43 +9,36 @@ import java.awt.event.*;
 
 
 public class SizeInput extends JFrame{
-    private JLabel info;
-    private JTextField xCord;
-    private JTextField yCord;
-    private int x;
-    private int y;
-    private JButton ok;
+    private final JTextField yCord;
+    private int y = 0 ;
+    private final JButton ok;
 
-    public SizeInput(final String s){
+    public SizeInput(final String s) {
         super(s);
-        setLayout(new GridLayout(3, 1, 10, 10));
+        setLayout(new GridLayout(3, 0, 10, 10));
         this.ok = new JButton("Ok");
-        this.info = new JLabel("Введите координаты:");
-        this.xCord = new JTextField("x", 5);
-        this.yCord = new JTextField("y", 5);
-        add(this.info);
-        add(new JPanel());
-        add(this.xCord);
+        JLabel info = new JLabel("Введите размер:");
+        this.yCord = new JTextField("длина лабиринта", 5);
+        add(info);
         add(this.yCord);
-        add(new JPanel());
         add(this.ok);
 
         ok.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == ok){
-                    x = Integer.parseInt(xCord.getText());
-                    y = Integer.parseInt(yCord.getText());
+                    try {
+                        y = Integer.parseInt(yCord.getText());
+                        if (y < 4 || y > 100) {
+                            throw new RangeException((short) 0,"");
+                        }
                         setVisible(false);
-                        new MazeWindow(s, x, y);
+                        new MazeWindow(s, y, y, new Maze(y));
+                    }catch (NumberFormatException | RangeException err){
+                        JOptionPane.showMessageDialog(new JFrame(), "Введите целое значение от 4 до 100",
+                                "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-            }
-        });
-
-        xCord.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                xCord.setText("");
             }
         });
 
