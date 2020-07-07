@@ -10,7 +10,7 @@ public class Maze {
     public Maze(int sizeX, int sizeY){
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        labyrinth = new Vector< Vector<Cell> >(100, 100);
+        labyrinth = new Vector< Vector<Cell> >(10, 10);
         for(int i = 0; i < sizeY; i++) {
             Vector<Cell> cells = new Vector<Cell>();
             for (int j = 0; j < sizeX; j++) {
@@ -32,7 +32,7 @@ public class Maze {
     public Maze(int size){
         this.sizeX = size;
         this.sizeY = size;
-        labyrinth = new Vector< Vector<Cell> >(100, 100);
+        labyrinth = new Vector< Vector<Cell> >(10, 10);
         for(int i = 0; i < sizeY; i++) {
             Vector<Cell> cells = new Vector<Cell>();
             for (int j = 0; j < sizeX; j++) {
@@ -52,7 +52,7 @@ public class Maze {
     public Maze(Maze m){
         this.sizeX = m.sizeX;
         this.sizeY = m.sizeY;
-        this.labyrinth = new Vector< Vector<Cell> >(1000, 1000);
+        this.labyrinth = new Vector< Vector<Cell> >();
         for(int i = 0; i < sizeY; i++) {
             Vector<Cell> cells = new Vector<Cell>();
             for (int j = 0; j < sizeX; j++) {
@@ -74,6 +74,7 @@ public class Maze {
         }
         System.out.println();
     }
+
     private void generateMaze() {
         Cell currentCell = labyrinth.elementAt(1).elementAt(1);
         Stack<Cell> stack = new Stack<Cell>();
@@ -158,21 +159,17 @@ public class Maze {
         boolean isWall;
         boolean wasSeen;
         boolean isPath;
-        boolean isUsed;
         Vector<Cell> neighbours;
         int g;
         int h;
         int f;
         Cell cameFrom;
 
-        public Cell(){
-        }
         public Cell(int x, int y){
             this.x = x;
             this.y = y;
             wasSeen = false;
             isPath = false;
-            isUsed = false;
             neighbours = new Vector<Cell>();
         }
 
@@ -180,8 +177,9 @@ public class Maze {
             this.x = obj.x;
             this.y = obj.y;
             this.isWall = obj.isWall;
-            this.isUsed = obj.isUsed;
+            this.wasSeen = obj.wasSeen;
             this.isPath = obj.isPath;
+            this.neighbours = new Vector<>();
         }
 
     }

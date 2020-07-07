@@ -7,21 +7,20 @@ import java.awt.event.*;
 
 
 public class SizeInput extends JFrame{
-    private JLabel info;
-    private JTextField xCord;
-    private JTextField yCord;
+    private final JTextField xCord;
+    private final JTextField yCord;
     private int x;
     private int y;
-    private JButton ok;
+    private final JButton ok;
 
     public SizeInput(final String s){
         super(s);
         setLayout(new GridLayout(3, 1, 10, 10));
         this.ok = new JButton("Ok");
-        this.info = new JLabel("Введите координаты:");
+        JLabel info = new JLabel("Введите координаты:");
         this.xCord = new JTextField("ширина лабиринта", 5);
         this.yCord = new JTextField("длина лабиринта", 5);
-        add(this.info);
+        add(info);
         add(new JPanel());
         add(this.xCord);
         add(this.yCord);
