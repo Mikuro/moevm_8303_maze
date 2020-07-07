@@ -3,7 +3,10 @@ package com.numbernull;
 import java.util.*;
 
 public class Astar {
-    public List<Maze.Cell> search(Maze maze, Maze.Cell sourceCell, Maze.Cell goalCell){
+    public static Snapshot snap;
+
+    public static List<Maze.Cell> search(Maze maze, Maze.Cell sourceCell, Maze.Cell goalCell){
+        snap = new Snapshot();
         Map<Maze.Cell, Boolean> closedSet = new HashMap<Maze.Cell, Boolean>();
         Comparator<Maze.Cell> comparator = new CellComparator();
         PriorityQueue<Maze.Cell> openSet = new PriorityQueue<Maze.Cell>(100, comparator);
@@ -12,8 +15,9 @@ public class Astar {
         sourceCell.h = heuristicCost(sourceCell, goalCell);
         sourceCell.f = sourceCell.g + sourceCell.h;
         openSet.add(sourceCell);
-
-        while(openSet.isEmpty()){
+        snap.addState(maze);
+        sourceCell.isPath = true;
+        while(!openSet.isEmpty()){
             Maze.Cell x = openSet.remove();
 
              if (x == goalCell)
@@ -36,6 +40,7 @@ public class Astar {
                         }
                     }
                     if(gBetter){
+                        i.isPath = true;
                         i.cameFrom = x;
                         i.g = gScore;
                         i.h = heuristicCost(i,x);
@@ -43,25 +48,45 @@ public class Astar {
                     }
                 }
             }
+            snap.addState(maze);
         }
         return null;
     }
 
-    private List<Maze.Cell> reconstructPath(Maze.Cell start, Maze.Cell goal){
+    public static class Snapshot{
+        public ArrayList<Maze> states;
+
+        public Snapshot(){
+            states = new ArrayList<>(10000);
+        }
+
+        public void addState(final Maze step){
+            this.states.add(new Maze(step));
+        }
+
+        public Maze getState(Integer iteration){
+            return this.states.get(iteration);
+        }
+
+    }
+
+    private static List<Maze.Cell> reconstructPath(Maze.Cell start, Maze.Cell goal){
         ArrayList<Maze.Cell> path = new ArrayList<Maze.Cell>();
         Maze.Cell currentCell = goal;
         while(currentCell != null){
             path.add(currentCell);
+
+            System.out.println("Current iteration cell is x = " + currentCell.x + " y is " + currentCell.y);
             currentCell = currentCell.cameFrom;
         }
         return path;
     }
 
-    private int heuristicCost(Maze.Cell a, Maze.Cell b){
+    private static int heuristicCost(Maze.Cell a, Maze.Cell b){
         return (b.x * b.x + b.y * b.y) - (a.x * a.x + a.y * a.y);
     }
 
-    public class CellComparator implements Comparator<Maze.Cell>{
+    public static class CellComparator implements Comparator<Maze.Cell>{
         @Override
         public int compare(Maze.Cell o1, Maze.Cell o2) {
             return Integer.compare(o2.f, o1.f);

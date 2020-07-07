@@ -4,8 +4,8 @@ package com.numbernull;
 import java.util.*;
 
 public class Maze {
-    private final int sizeX;
-    private final int sizeY;
+    public final int sizeX;
+    public final int sizeY;
     public final Vector<Vector<Cell>> labyrinth;
     public Maze(int sizeX, int sizeY){
         this.sizeX = sizeX;
@@ -27,6 +27,40 @@ public class Maze {
             }
         }
         generateMaze();
+    }
+
+    public Maze(int size){
+        this.sizeX = size;
+        this.sizeY = size;
+        labyrinth = new Vector< Vector<Cell> >(100, 100);
+        for(int i = 0; i < sizeY; i++) {
+            Vector<Cell> cells = new Vector<Cell>();
+            for (int j = 0; j < sizeX; j++) {
+                Cell cell = new Cell(j, i);
+                cells.addElement(cell);
+                cell.isWall = true;
+            }
+            labyrinth.addElement(cells);
+        }
+        for(int i = 1; i < sizeY - 1; i++){
+            for(int j = 1; j < sizeX - 1; j++){
+                addNeighbours(labyrinth.elementAt(i).elementAt(j));
+            }
+        }
+    }
+
+    public Maze(Maze m){
+        this.sizeX = m.sizeX;
+        this.sizeY = m.sizeY;
+        this.labyrinth = new Vector< Vector<Cell> >(1000, 1000);
+        for(int i = 0; i < sizeY; i++) {
+            Vector<Cell> cells = new Vector<Cell>();
+            for (int j = 0; j < sizeX; j++) {
+                Cell cell = new Cell(m.labyrinth.elementAt(i).elementAt(j));
+                cells.addElement(cell);
+            }
+            this.labyrinth.addElement(cells);
+        }
     }
 
     public void printMaze(){
@@ -97,11 +131,6 @@ public class Maze {
         }
     }
 
-    /**
-     * -1 - дорожка
-     * 0 - потенциальный путь
-     * >0 - точно стена
-     */
 
     private void addNeighbours(Cell cell) {
         for (int i = cell.y - 1; i <= cell.y + 1; i++) {
@@ -143,8 +172,18 @@ public class Maze {
             this.y = y;
             wasSeen = false;
             isPath = false;
+            isUsed = false;
             neighbours = new Vector<Cell>();
         }
+
+        public Cell(Cell obj){
+            this.x = obj.x;
+            this.y = obj.y;
+            this.isWall = obj.isWall;
+            this.isUsed = obj.isUsed;
+            this.isPath = obj.isPath;
+        }
+
     }
 
 }
