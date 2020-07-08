@@ -94,6 +94,7 @@ public class MazeWindow extends JFrame {
         options.setBackground(Color.WHITE);
 
         JButton start = new JButton("Старт");
+        start.setFont(new java.awt.Font("Lucida Grande", 1, 28));
 
         start.addActionListener(new ActionListener() {
             @Override
@@ -122,13 +123,16 @@ public class MazeWindow extends JFrame {
         layoutOpt.gridy = 0; // № строки
         layoutOpt.gridwidth = 2; // число ячеек, занимаемых объектом
         layoutOpt.ipadx = 70;
-        layoutOpt.ipady = 70;
+        layoutOpt.ipady = 40;
         layoutOpt.anchor = GridBagConstraints.CENTER; //  задает выравнивание
 
         options.add(start, layoutOpt);
 
         JButton next = new JButton("Вперед");
         JButton prev = new JButton("Назад");
+
+        next.setFont(new java.awt.Font("Lucida Grande", 1, 18));
+        prev.setFont(new java.awt.Font("Lucida Grande", 1, 18));
 
         next.addActionListener(new ActionListener() {
             @Override
@@ -216,6 +220,9 @@ public class MazeWindow extends JFrame {
 
         JButton setBegin = new JButton("Указать начало");
         JButton setEnd = new JButton("Указать конец");
+
+        setBegin.setFont(new java.awt.Font("Lucida Grande", 1, 18));
+        setEnd.setFont(new java.awt.Font("Lucida Grande", 1, 18));
 
         setBegin.addActionListener(new ActionListener() {
             @Override
@@ -333,7 +340,7 @@ public class MazeWindow extends JFrame {
         tmp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
-        tmp.setPreferredSize(new Dimension(120,5));
+        tmp.setPreferredSize(new Dimension(120,20));
         usabilityPane.add(tmp, usabilityOpt);
 
         usabilityOpt.insets = new Insets(0, 20, 0, 30);
@@ -344,6 +351,7 @@ public class MazeWindow extends JFrame {
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
         tmp.setText("дорожка");
+        tmp.setFont(new java.awt.Font("Lucida Grande", 1, 15));
         usabilityPane.add(tmp, usabilityOpt);
         // magneta
         usabilityOpt.insets = new Insets(40, 20, 0, 30);
@@ -353,7 +361,7 @@ public class MazeWindow extends JFrame {
         tmp.setBorder(BorderFactory.createLineBorder(Color.MAGENTA, 1));
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
-        tmp.setPreferredSize(new Dimension(120,5));
+        tmp.setPreferredSize(new Dimension(120,20));
         usabilityPane.add(tmp, usabilityOpt);
 
         usabilityOpt.insets = new Insets(0, 20, 0, 30);
@@ -363,6 +371,7 @@ public class MazeWindow extends JFrame {
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
         tmp.setText("потенциальный путь");
+        tmp.setFont(new java.awt.Font("Lucida Grande", 1, 15));
         usabilityPane.add(tmp, usabilityOpt);
 
         // red
@@ -374,7 +383,7 @@ public class MazeWindow extends JFrame {
         tmp.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
-        tmp.setPreferredSize(new Dimension(120,5));
+        tmp.setPreferredSize(new Dimension(120,20));
         usabilityPane.add(tmp, usabilityOpt);
 
         usabilityOpt.insets = new Insets(0, 0, 0, 20);
@@ -384,6 +393,7 @@ public class MazeWindow extends JFrame {
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
         tmp.setText("искомый путь");
+        tmp.setFont(new java.awt.Font("Lucida Grande", 1, 15));
         usabilityPane.add(tmp, usabilityOpt);
 
         // black
@@ -394,7 +404,8 @@ public class MazeWindow extends JFrame {
         tmp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
-        tmp.setPreferredSize(new Dimension(120,5));
+        tmp.setPreferredSize(new Dimension(120,20));
+        tmp.setFont(new java.awt.Font("Lucida Grande", 1, 15));
         usabilityPane.add(tmp, usabilityOpt);
 
         usabilityOpt.insets = new Insets(0, 0, 0, 20);
@@ -404,6 +415,7 @@ public class MazeWindow extends JFrame {
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
         tmp.setText("стена");
+        tmp.setFont(new java.awt.Font("Lucida Grande", 1, 15));
         usabilityPane.add(tmp, usabilityOpt);
 
         //yellow
@@ -415,7 +427,7 @@ public class MazeWindow extends JFrame {
         tmp.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 1));
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
-        tmp.setPreferredSize(new Dimension(120,5));
+        tmp.setPreferredSize(new Dimension(120,20));
         usabilityPane.add(tmp, usabilityOpt);
 
         usabilityOpt.insets = new Insets(0, 0, 0, 20);
@@ -424,7 +436,8 @@ public class MazeWindow extends JFrame {
         tmp.setBackground(Color.WHITE);
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
-        tmp.setText("старт");
+        tmp.setText("начало");
+        tmp.setFont(new java.awt.Font("Lucida Grande", 1, 15));
         usabilityPane.add(tmp, usabilityOpt);
 
         //blue
@@ -435,7 +448,7 @@ public class MazeWindow extends JFrame {
         tmp.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
-        tmp.setPreferredSize(new Dimension(120,5));
+        tmp.setPreferredSize(new Dimension(120,20));
         usabilityPane.add(tmp, usabilityOpt);
 
         usabilityOpt.insets = new Insets(0, 0, 0, 20);
@@ -444,7 +457,8 @@ public class MazeWindow extends JFrame {
         tmp.setBackground(Color.WHITE);
         tmp.setOpaque(true);
         tmp.setHorizontalAlignment(SwingConstants.CENTER);
-        tmp.setText("финиш");
+        tmp.setText("конец");
+        tmp.setFont(new java.awt.Font("Lucida Grande", 1, 15));
         usabilityPane.add(tmp, usabilityOpt);
 
         // в начало layout добавляем поле с кнопками
