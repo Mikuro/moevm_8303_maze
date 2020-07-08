@@ -47,7 +47,7 @@ public class Astar {
                         i.wasSeen = true;
                         i.cameFrom = x;
                         i.g = gScore;
-                        i.h = heuristicCost(i,x);
+                        i.h = heuristicCost(i,goalCell);
                         i.f = i.g + i.h;
                     }
                 }
@@ -85,7 +85,7 @@ public class Astar {
     }
 
     private static int heuristicCost(Maze.Cell a, Maze.Cell b){
-        return (b.x * b.x + b.y * b.y) - (a.x * a.x + a.y * a.y);
+        return Math.abs((b.x * b.x + b.y * b.y) - (a.x * a.x + a.y * a.y));
     }
 
     public static class CellComparator implements Comparator<Maze.Cell>{
