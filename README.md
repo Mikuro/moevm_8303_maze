@@ -1,2 +1,2 @@
 # moevm_8303_maze
-Repository for the study project
+Чтобы запустить проект, нужно обновить JDK и JRE до полседней версии, а потом запустить .jar
